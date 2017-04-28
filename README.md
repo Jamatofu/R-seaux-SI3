@@ -40,3 +40,7 @@ Sur la gestion des idées/projets :
  - **participer(idEtudiant, idProjet)** : _Ajoute un étudiant comme possible participant à un projet_
  - **validerParticipation(idEtudiant, idProjet)** : _Valide un étudiant comme partipant à un projet_
  - **getCandidats(idProjet)** : _Récupère les candidats d'un projet_
+ 
+ Pour le super utilisateur :
+ 
+ - **getProjets()** : __Récupère tout les projets__
