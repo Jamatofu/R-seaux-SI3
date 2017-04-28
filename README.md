@@ -43,4 +43,4 @@ Sur la gestion des idées/projets :
  
  Pour le super utilisateur :
  
- - **getProjets()** : __Récupère tout les projets__
+ - **getProjets()** : _Récupère tout les projets_
