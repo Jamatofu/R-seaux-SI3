@@ -7,24 +7,21 @@ import java.net.*;
 
 
 public class MainClient {
-    public static void main(String args[]) {
-        ServerSocket echoServer = null;
-        String line;
-        DataInputStream is;
-        PrintStream os;
-        Socket clientSocket = null;
-        try { echoServer = new ServerSocket(9999);}
-        catch (IOException e) {System.out.println(e); }
+
+    public static void main(String[] args) {
+        Socket smtpSocket = null; // le socket client
+        DataOutputStream os = null; // output stream
+        DataInputStream is = null; // input stream
         try {
-            clientSocket = echoServer.accept();
-            is = new DataInputStream(clientSocket.getInputStream());
-            os = new PrintStream(clientSocket.getOutputStream());
-            while (true) {
-                line = is.readLine();
-                os.println(line);
-            }
+            smtpSocket = new Socket("hostname", 25);
+            os = new DataOutputStream(smtpSocket.getOutputStream());
+            is = new DataInputStream(smtpSocket.getInputStream());
+        } catch (UnknownHostException e) {
+            System.err.println("Don't know about host: hostname");
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to: hostname");
         }
-        catch (IOException e) {
-            System.out.println(e);}
-    } }
+
+    }
+}
 
