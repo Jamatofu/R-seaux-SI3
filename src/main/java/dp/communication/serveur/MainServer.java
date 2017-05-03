@@ -6,8 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import dp.serveur.processing.Idea;
-
 
 
 public class MainServer {
@@ -40,7 +38,6 @@ public class MainServer {
 					e.printStackTrace();
 				}
 				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-				outputStream.writeObject(new Idea(null, "title", "description"));
 				
 			} catch (IOException e) {
 				 System.err.println("erreur");
