@@ -9,18 +9,18 @@ import java.util.List;
  *
  * @author Julien Maureille
  */
-public class StudentManager {
-    private List<Student> students = new ArrayList<>();
+public class IdeaManager {
+    private List<Idea> ideas = new ArrayList<>();
 
-    public void add(Student id) {
-        students.add(id);
+    public void add(Idea id) {
+        ideas.add(id);
     }
 
     public void remove(int id) {
-        students.remove(id);
+        ideas.remove(id);
     }
 
     public String list() {
-        return students.toString();
+        return ideas.toString();
     }
 }
