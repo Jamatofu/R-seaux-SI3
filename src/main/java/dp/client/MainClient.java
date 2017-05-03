@@ -1,4 +1,4 @@
-package davidpierre.client;
+package dp.client;
 
 /**
  * @author jamatofu on 28/04/17.
