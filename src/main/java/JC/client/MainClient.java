@@ -10,12 +10,21 @@ public class MainClient {
 
     public static void main(String[] args) {
         Socket smtpSocket = null; // le socket client
-        DataOutputStream os = null; // output stream
-        DataInputStream is = null; // input stream
+        PrintStream os = null; // output stream
+        BufferedReader is = null; // input stream
         try {
-            smtpSocket = new Socket("hostname", 25);
-            os = new DataOutputStream(smtpSocket.getOutputStream());
-            is = new DataInputStream(smtpSocket.getInputStream());
+            smtpSocket = new Socket("10.212.124.235", 4000);
+            System.out.println("ok");
+            os = new PrintStream(smtpSocket.getOutputStream());
+            is = new BufferedReader(new InputStreamReader(smtpSocket.getInputStream()));
+            os.println("hello");
+            os.flush();
+
+            String line;
+            line = is.readLine();
+            os.println(line);
+            System.out.println(line);
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: hostname");
         } catch (IOException e) {
