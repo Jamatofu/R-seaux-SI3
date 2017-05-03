@@ -1,4 +1,4 @@
-package dp.serveur.processing;
+package dp.processing;
 
 import java.util.List;
 

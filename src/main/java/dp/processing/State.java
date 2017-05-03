@@ -1,4 +1,4 @@
-package dp.serveur.processing;
+package dp.processing;
 
 public enum State {
 	IDEA_STATE,

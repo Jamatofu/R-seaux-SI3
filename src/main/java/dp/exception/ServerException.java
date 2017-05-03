@@ -1,4 +1,4 @@
-package dp.serveur.processing;
+package dp.exception;
 
 public class ServerException extends Exception {
 
