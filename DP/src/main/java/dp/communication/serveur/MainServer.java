@@ -6,11 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import dp.communication.Request;
+
 
 
 public class MainServer {
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws ClassNotFoundException{
 		
 		ServerSocket serverSocket = null ;
 		Socket clientSocket = null;
@@ -20,7 +22,7 @@ public class MainServer {
 		Object text;
 		
 		try { 
-			 serverSocket = new ServerSocket(8095); 
+			 serverSocket = new ServerSocket(9001); 
 		}
 		catch (IOException e){ 
 			 System.err.println("Could not listen on port: 4444.");
@@ -32,6 +34,16 @@ public class MainServer {
 				clientSocket = serverSocket.accept();
 				System.out.println("accepted");
 				inputStream = new ObjectInputStream(clientSocket.getInputStream());
+				System.out.println("Fin de lecture");
+				Request rq = (Request)inputStream.readObject();
+				System.out.println(rq.getResource());
+				
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				try {
 					text = inputStream.readObject();
 				} catch (ClassNotFoundException e) {
@@ -43,17 +55,10 @@ public class MainServer {
 				 System.err.println("erreur");
 				 System.exit(-1); 
 			}
-			
-			 
+				 
 		}
 		
-		
-		try {
-			serverSocket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+
 	} 
 		
 		

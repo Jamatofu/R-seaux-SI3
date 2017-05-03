@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import dp.communication.Request;
+
 /**
  * @author DAVID ET PIERRE
  */
@@ -20,11 +22,14 @@ public class MainClient {
 	private static void startCli(){
 		Socket myClient = null;
 		try {
-			myClient = new Socket("172.19.250.171", 8091);
+			myClient = new Socket("127.0.0.1", 9001);
 			try {
 				outputStream = new ObjectOutputStream(myClient.getOutputStream());
-				inputStream = new ObjectInputStream(myClient.getInputStream());
+				outputStream.writeObject(new Request("Idea", "addParicipant"));
+				outputStream.close();
 				
+				inputStream = new ObjectInputStream(myClient.getInputStream());
+				inputStream.close();
 				}
 			catch (IOException e) {
 				System.err.println(e);
