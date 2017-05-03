@@ -1,4 +1,4 @@
-package JC.serveur.communication;
+package JC.communication;
 
 import java.io.Serializable;
 
