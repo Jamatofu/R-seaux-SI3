@@ -27,9 +27,9 @@ public class MainServer {
         catch (IOException e) {System.out.println(e); }
         try {
             clientSocket = myServer.accept();
-            System.out.println("Connexion établie");
             os = new PrintStream(clientSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            os.println("");
             while (true) {
                 line = is.readLine();
                 os.println(line);

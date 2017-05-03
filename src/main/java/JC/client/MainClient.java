@@ -22,7 +22,6 @@ public class MainClient {
 
             String line;
             line = is.readLine();
-            os.println(line);
             System.out.println(line);
 
         } catch (UnknownHostException e) {
