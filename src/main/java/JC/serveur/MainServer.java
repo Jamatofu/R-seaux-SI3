@@ -1,5 +1,7 @@
 package JC.serveur;
 
+import JC.serveur.communication.Response;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -29,5 +31,11 @@ public class MainServer {
         }
         catch (IOException e) {
             System.out.println(e);}
+    }
+    private void readQuery(String query){
+
+    }
+    private void createResponse(Response res){
+
     }
 }
