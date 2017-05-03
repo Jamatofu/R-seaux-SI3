@@ -6,5 +6,8 @@ package JC.serveur.data;
  *
  * @author Julien Maureille
  */
-public class Student {
+public class Student extends Resource {
+    public String toString() {
+        return "etudiant "+id;
+    }
 }

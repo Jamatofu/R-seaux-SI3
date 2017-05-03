@@ -1,5 +1,9 @@
 package JC.serveur.communication;
 
+import JC.serveur.data.Action;
+import JC.serveur.data.Resource;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,12 +12,9 @@ import java.util.List;
  *
  * @author Julien Maureille
  */
-public class Query {
-    private String resource; //sous forme : "type:id" -> par ex : "student:45"
-    /**
-     *
-     */
-    private String action; //ajouter, supprimer, lister...
+public class Query implements Serializable {
+    private Resource resource;
+    private Action action; //ajouter, supprimer, lister...
     private List<String> parameters;
 
 }
