@@ -1,7 +1,7 @@
 package JC.serveur;
 
-import JC.serveur.communication.Query;
-import JC.serveur.communication.Response;
+import JC.communication.Query;
+import JC.communication.Response;
 import JC.serveur.data.IdeaManager;
 import JC.serveur.data.StudentManager;
 
@@ -29,7 +29,7 @@ public class MainServer {
             clientSocket = myServer.accept();
             os = new PrintStream(clientSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            os.println("Connexion reussie");
+            os.println("Bienvenue client");
             os.flush();
             while (true) {
                 line = is.readLine();
