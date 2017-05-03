@@ -1,6 +1,8 @@
 package JC.serveur;
 
 import JC.serveur.communication.Response;
+import JC.serveur.data.IdeaManager;
+import JC.serveur.data.StudentManager;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -12,6 +14,10 @@ import java.net.Socket;
  * @author jamatofu on 28/04/17.
  */
 public class MainServer {
+
+    private StudentManager students = new StudentManager();
+    private IdeaManager ideas = new IdeaManager();
+
     public static void main(String args[]) {
         ServerSocket echoServer = null;
         String line;
