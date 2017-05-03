@@ -13,7 +13,7 @@ public class MainClient {
 	private static ObjectOutputStream outputStream;
 	private static ObjectInputStream inputStream;
 	
-	public static void main(){
+	public static void main(String[] args){
 		startCli();
 	}
 	
