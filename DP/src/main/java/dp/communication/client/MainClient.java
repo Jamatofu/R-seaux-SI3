@@ -24,6 +24,7 @@ public class MainClient {
 			try {
 				outputStream = new ObjectOutputStream(myClient.getOutputStream());
 				inputStream = new ObjectInputStream(myClient.getInputStream());
+				
 				}
 			catch (IOException e) {
 				System.err.println(e);
