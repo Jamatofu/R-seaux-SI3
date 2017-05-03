@@ -29,7 +29,8 @@ public class MainServer {
             clientSocket = myServer.accept();
             os = new PrintStream(clientSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            os.println("");
+            os.println("Connexion reussie");
+            os.flush();
             while (true) {
                 line = is.readLine();
                 os.println(line);

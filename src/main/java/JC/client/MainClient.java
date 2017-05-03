@@ -13,12 +13,11 @@ public class MainClient {
         PrintStream os = null; // output stream
         BufferedReader is = null; // input stream
         try {
-            smtpSocket = new Socket("10.212.124.235", 4000);
-            System.out.println("ok");
+            smtpSocket = new Socket("10.212.102.143", 4000);
             os = new PrintStream(smtpSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(smtpSocket.getInputStream()));
-            os.println("hello");
-            os.flush();
+            /*os.println("hello");
+            os.flush();*/
 
             String line;
             line = is.readLine();
