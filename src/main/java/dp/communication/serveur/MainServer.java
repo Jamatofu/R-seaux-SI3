@@ -1,4 +1,4 @@
-package dp.serveur.communication;
+package dp.communication.serveur;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,7 +22,7 @@ public class MainServer {
 		Object text;
 		
 		try { 
-			 serverSocket = new ServerSocket(4444); 
+			 serverSocket = new ServerSocket(8095); 
 		}
 		catch (IOException e){ 
 			 System.err.println("Could not listen on port: 4444.");

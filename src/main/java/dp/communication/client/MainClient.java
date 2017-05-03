@@ -1,4 +1,4 @@
-package dp.client;
+package dp.communication.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,7 +20,7 @@ public class MainClient {
 	private static void startCli(){
 		Socket myClient = null;
 		try {
-			myClient = new Socket("127.0.0.1", 4444);
+			myClient = new Socket("172.19.250.171", 8091);
 			try {
 				outputStream = new ObjectOutputStream(myClient.getOutputStream());
 				inputStream = new ObjectInputStream(myClient.getInputStream());

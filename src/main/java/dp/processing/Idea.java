@@ -1,7 +1,9 @@
-package dp.serveur.processing;
+package dp.processing;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import dp.exception.ServerException;
 
 public class Idea {
 	
