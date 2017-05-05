@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 
 import dp.communication.Query;
 import dp.communication.Request;
+import dp.exception.IdeaException;
+import dp.exception.RequestException;
+import dp.processing.Repository;
 import dp.processing.RequestOperator;
 
 
@@ -28,21 +31,36 @@ public class MainServer {
 	private static ObjectInputStream inputStream;
 	private static ObjectOutputStream outputStream;
 	private static final Logger SERVER_LOGGER = Logger.getLogger(MainServer.class.getName());
+	private static Repository repository;
 	
+	/**
+	 * Start the client
+	 * @param args
+	 * @throws ClassNotFoundException
+	 */
 	public static void main(String[] args) throws ClassNotFoundException{
 		initVars();
 		startServer();
 	}
 	
+	/**
+	 * Initialize needed variables
+	 */
 	private static void initVars(){
 		serverSocket = null ;
 		clientSocket = null;
 		listening = true;
+		repository = new Repository();
+		repository.fakeInit();
 	}
 	
+	/**
+	 * Start and run the server
+	 * @throws ClassNotFoundException
+	 */
 	private static void startServer() throws ClassNotFoundException{
 		try { 
-			 serverSocket = new ServerSocket(9001); 
+			 serverSocket = new ServerSocket(9002); 
 		}
 		catch (IOException e){ 
 			SERVER_LOGGER.log(Level.SEVERE, "Impossible d'écouter le port : 9001", e);
@@ -55,7 +73,7 @@ public class MainServer {
 				inputStream = new ObjectInputStream(clientSocket.getInputStream());
 				
 				Request request = (Request)inputStream.readObject();
-				RequestOperator reqOp = new RequestOperator(request);
+				RequestOperator reqOp = new RequestOperator(repository, request);
 				Query query = reqOp.execute();
 				
 				outputStream.writeObject(query);
@@ -67,7 +85,7 @@ public class MainServer {
 				if(query.getLabel().equals(Query.CLOSE))
 					closeServer();
 				
-			} catch (IOException e) {
+			} catch (IOException | NumberFormatException | RequestException | IdeaException e) {
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				e.printStackTrace(pw);
@@ -77,7 +95,11 @@ public class MainServer {
 				 
 		}
 	}
-		
+	
+	/**
+	 * Close the client and server socket
+	 * @throws IOException
+	 */
 	private static void closeServer() throws IOException{
 		clientSocket.close();
 		serverSocket.close();

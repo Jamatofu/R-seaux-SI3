@@ -3,9 +3,6 @@ package dp.processing;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import dp.exception.IdeaException;
 
 /**
  * 
@@ -15,12 +12,14 @@ import dp.exception.IdeaException;
  */
 public class Repository {	
 	private List<Idea> ideas;
+	private List<Student> students;
 	
 	/**
 	 * Default constructor
 	 */
 	public Repository(){
 		ideas = new ArrayList<>();
+		students = new ArrayList<>();
 	}
 	
 	/**
@@ -38,6 +37,22 @@ public class Repository {
 	 */
 	public void removeIdea(Idea idea){
 		ideas.remove(idea);
+	}
+	
+	/**
+	 * Allows to add a student
+	 * @param idea student to add to the repository
+	 */
+	public void addStudent(Student student){
+		students.add(student);
+	}
+	
+	/**
+	 * Allows to remove a student
+	 * @param idea student to remove from the repository
+	 */
+	public void removeStudent(Student student){
+		students.remove(student);
 	}
 	
 	/**
@@ -60,80 +75,32 @@ public class Repository {
 			ideasForTheStudent.add(iterator.next());
 		return ideasForTheStudent;
 	}
-	
-	/**
-	 * Allows to list all contributor fir a specific idea
-	 * @param ideaId idea id
-	 * @return the list of contributors and theirs status
-	 */
-	public Map<Student, Boolean> getContributors(int ideaId){
-		return ideas.get(ideaId).getContributors();
-	}
-	
-	/**
-	 * Allows to add a request for participation
-	 * @param ideaId idea id
-	 * @param student the applicant student
-	 * @throws IdeaException
-	 */
-	public void paticipateToIdea(int ideaId, Student student) throws IdeaException{
-		ideas.get(ideaId).addContributor(student);
-	}
-	
-	/**
-	 * Allows to accept a request for participation
-	 * @param ideaId idea id
-	 * @param student the applicant student
-	 * @throws IdeaException
-	 */
-	public void acceptToIdea(int ideaId, Student student) throws IdeaException{
-		ideas.get(ideaId).agreeParticipant(student);
-	}
-	
-	/**
-	 * Allows to know the description of an idea
-	 * @param ideaId idea id
-	 * @return the description
-	 */
-	public String getDescription(int ideaId){
-		return ideas.get(ideaId).getDescription();
-	}
-	
-	/**
-	 * Allows to know the title of an idea
-	 * @param ideaId idea id
-	 * @return the title
-	 */
-	public String getTitle(int ideaId){
-		return ideas.get(ideaId).getTitle();
-	}
 
 	/**
-	 * Allows to modify the description of an idea
-	 * @param ideaId idea id
-	 * @param newDesc new description for the idea
+	 * Generate some datas to test
 	 */
-	public void updateIdeaDescription(int ideaId, String newDesc){
-		ideas.get(ideaId).setDescription(newDesc);
+	public void fakeInit(){
+		students.add(new Student("ty852456", "datPassWd"));
+		students.add(new Student("ab012987", "azerty123"));
+		
+		ideas.add(new Idea(students.get(0), "L'idée Noumero 1", "Mais pas la dernière !"));
 	}
 	
 	/**
-	 * Allows to modify the title of an idea
-	 * @param ideaId idea id
-	 * @param newDesc new title for the idea
+	 * Allows to get an idea from her id
+	 * @param ideaId id of the idea
+	 * @return the idea object
 	 */
-	public void updateIdeaTitle(int ideaId, String newTitle){
-		ideas.get(ideaId).setTitle(newTitle);
+	public Idea getIdea(int ideaId){
+		return ideas.get(ideaId);
 	}
 	
 	/**
-	 * Allows to make an idea become a project
-	 * @param ideaId idea id
+	 * Allows to get a student from his id
+	 * @param id id of the student
+	 * @return the student object
 	 */
-	public void changeIdeaState(int ideaId){
-		ideas.get(ideaId).changeState();
+	public Student getStudent(String id){
+		return students.stream().filter(student -> student.getId().equals(id)).findFirst().get();
 	}
-	
-	
-
 }

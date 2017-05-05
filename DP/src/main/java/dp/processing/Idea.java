@@ -147,4 +147,11 @@ public class Idea {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public String toString(){
+		return title + " :\n" + description + "\nParticipants : "+getValidatedContributorsSize()+"/"+MaxPerIdea;
+	}
 }
