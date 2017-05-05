@@ -4,25 +4,36 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import dp.communication.Request;
 
 /**
- * @author DAVID ET PIERRE
+ * 
+ * Client launcher
+ * @author David Sene && Pierre Rainero
+ *
  */
 public class MainClient {
-	private Socket clientSocket = null;
+	private static Socket clientSocket = null;
 	private static ObjectOutputStream outputStream;
 	private static ObjectInputStream inputStream;
+	private static final Logger CLIENT_LOGGER = Logger.getLogger(MainClient.class.getName());
 	
 	public static void main(String[] args){
+		initVars();
 		startCli();
+	}
+	
+	private static void initVars(){
+		clientSocket = null;
 	}
 	
 	private static void startCli(){
 		Socket myClient = null;
 		try {
-			myClient = new Socket("127.0.0.1", 9001);
+			myClient = new Socket("192.168.1.14", 9001);
 			try {
 				outputStream = new ObjectOutputStream(myClient.getOutputStream());
 				outputStream.writeObject(new Request("Idea", "addParicipant"));
@@ -32,11 +43,11 @@ public class MainClient {
 				inputStream.close();
 				}
 			catch (IOException e) {
-				System.err.println(e);
-				}
+				CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
+			}
 		}
 		catch (IOException e) {
-			System.out.println(e);
+			CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 }

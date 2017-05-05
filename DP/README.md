@@ -1,3 +1,4 @@
+#PARTIE : David Sene && Pierre Rainero
 
 ## Liste des requêtes :
 

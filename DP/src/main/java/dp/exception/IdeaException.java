@@ -1,10 +1,10 @@
 package dp.exception;
 
-public class ServerException extends Exception {
+public class IdeaException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public ServerException(String message){
+	public IdeaException(String message){
 		super(message);
 	}
 }
