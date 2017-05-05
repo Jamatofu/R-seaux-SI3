@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dp.communication.Query;
 import dp.communication.Request;
 
 /**
@@ -31,18 +32,21 @@ public class MainClient {
 	}
 	
 	private static void startCli(){
-		Socket myClient = null;
 		try {
-			myClient = new Socket("192.168.1.14", 9001);
+			clientSocket = new Socket("192.168.1.14", 9001); //Adresse IP Pierre
 			try {
-				outputStream = new ObjectOutputStream(myClient.getOutputStream());
-				outputStream.writeObject(new Request("Idea", "addParicipant"));
-				outputStream.close();
+				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+				inputStream = new ObjectInputStream(clientSocket.getInputStream());
 				
-				inputStream = new ObjectInputStream(myClient.getInputStream());
+				outputStream.writeObject(new Request("Idea", "addParicipant"));
+				outputStream.flush();
+
+				
+				Query query = (Query)inputStream.readObject();
+				outputStream.close();
 				inputStream.close();
 				}
-			catch (IOException e) {
+			catch (IOException | ClassNotFoundException e) {
 				CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}

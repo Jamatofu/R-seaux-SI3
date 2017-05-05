@@ -10,7 +10,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dp.communication.Query;
 import dp.communication.Request;
+import dp.processing.RequestOperator;
 
 
 /**
@@ -47,17 +49,23 @@ public class MainServer {
 			System.exit(-1); 
 		}
 		while (listening){
-				System.out.println("listeniing on 4444");
 			 try {
 				clientSocket = serverSocket.accept();
-				System.out.println("accepted");
-				inputStream = new ObjectInputStream(clientSocket.getInputStream());
-				System.out.println("Fin de lecture");
-				Request rq = (Request)inputStream.readObject();
-				System.out.println(rq.getResource());
-				
 				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-				closeServer();
+				inputStream = new ObjectInputStream(clientSocket.getInputStream());
+				
+				Request request = (Request)inputStream.readObject();
+				RequestOperator reqOp = new RequestOperator(request);
+				Query query = reqOp.execute();
+				
+				outputStream.writeObject(query);
+				outputStream.flush();
+				
+				inputStream.close();
+				outputStream.close();
+				
+				if(query.getLabel().equals(Query.CLOSE))
+					closeServer();
 				
 			} catch (IOException e) {
 				StringWriter sw = new StringWriter();
@@ -71,6 +79,7 @@ public class MainServer {
 	}
 		
 	private static void closeServer() throws IOException{
+		clientSocket.close();
 		serverSocket.close();
 		listening = false;
 	}
