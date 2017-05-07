@@ -75,6 +75,18 @@ public class Repository {
 			ideasForTheStudent.add(iterator.next());
 		return ideasForTheStudent;
 	}
+	
+	/**
+	 * Allows to list all ideas validate as projects
+	 * @return list of all projects
+	 */
+	public List<Idea> getProjets(){
+		List<Idea> ideasForTheStudent = new ArrayList<>();
+		Iterator<Idea> iterator = ideas.stream().filter(idea -> idea.getState()==State.PROJECT_STATE).iterator();
+		while(iterator.hasNext())
+			ideasForTheStudent.add(iterator.next());
+		return ideasForTheStudent;
+	}
 
 	/**
 	 * Generate some datas to test

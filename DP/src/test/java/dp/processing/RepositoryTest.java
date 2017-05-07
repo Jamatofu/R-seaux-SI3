@@ -63,4 +63,30 @@ public class RepositoryTest {
 		assertTrue(returnV.isEmpty());
 	}
 	
+	@Test
+	public void getOnlyProjects(){
+		Idea idea11 = new Idea(student1, "idea11", "");
+		Idea idea12 = new Idea(student1, "idea12", "");
+		Idea idea21 = new Idea(student2, "idea21", "");
+		Idea idea13 = new Idea(student1, "idea13", "");
+		
+		repository.addIdea(idea11);
+		repository.addIdea(idea12);
+		repository.addIdea(idea21);
+		repository.addIdea(idea13);
+		
+		List<Idea> returnV = repository.getProjets();
+		
+		assertTrue(returnV.isEmpty());
+		
+		repository.getIdea(idea11.getId()).changeState();
+		repository.getIdea(idea21.getId()).changeState();
+		
+		returnV = repository.getProjets();
+		assertTrue(returnV.size()==2);
+		assertTrue(returnV.contains(idea11));
+		assertTrue(returnV.contains(idea21));
+		assertFalse(returnV.contains(idea13));
+	}
+	
 }
