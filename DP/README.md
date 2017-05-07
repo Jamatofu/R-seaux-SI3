@@ -49,4 +49,4 @@ Pour le super utilisateur :
  - **getProjets()** : _Récupère tout les projets_
 
  ## Classes nécessaires/partagées (sérialisées) :
- Le serveur et le client doivent se partager toutes les classes du package "Communication" (soit "Request", "Query" et les énumérations "Resource", "Action"). Toutes les classes de processing et du server ne sont nécessaires qu'au serveur, le client ne manipule pas directement le "modèle", il intéragit avec grace au server (par le biais de "Request") et obtiens l'affichage de son action via "Query". Les classes du client ne sont bien sur nécessaires qu'au client.
+ Le serveur et le client doivent se partager toutes les classes du package "communication" (soit "Request", "Query" et les énumérations "Resource", "Action"). Toutes les classes du package "processing" et du package "server" ne sont nécessaires qu'au serveur, le client ne manipule pas directement le "modèle", il intéragit avec grace au server (par le biais de "Request") et obtiens l'affichage de son action via "Query". Les classes du package "client" ne sont bien sur nécessaires qu'au client.

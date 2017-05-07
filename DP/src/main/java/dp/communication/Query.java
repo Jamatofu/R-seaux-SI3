@@ -16,7 +16,18 @@ public class Query implements Serializable {
 	 */
 	private static final long serialVersionUID = -4871192679406809330L;
 	
+	/**
+	 * Static value to notify there is a normal query (not a "close server")
+	 */
 	public final static String TOCLI = "tocli";
+	/**
+	 * Static value to notify the student is now connected
+	 */
+	public final static String CONNECTED = "connected";
+	/**
+	 * Static value to notify the student isn't connected
+	 */
+	public final static String CONNECTION_FAIL = "fail";
 	private String label;
 	private List<String> structuredQuery;
 	

@@ -24,6 +24,7 @@ public class MainClient {
 	private static final Logger CLIENT_LOGGER = Logger.getLogger(MainClient.class.getName());
 	private static ClientInterface clientCmd;
 	private static boolean talk;
+	private static boolean connected;
 	
 	/**
 	 * Start the client
@@ -42,6 +43,7 @@ public class MainClient {
 		clientSocket = null;
 		clientCmd = new ClientInterface();
 		talk = true;
+		connected = false;
 	}
 	
 	/**
@@ -49,12 +51,16 @@ public class MainClient {
 	 */
 	private static void startCli(){
 		try {
-			clientSocket = new Socket("192.168.1.14", 9005); //Adresse IP Pierre
+			clientSocket = new Socket("192.168.1.14", 9005); /** Adresse de Pierre **/
 			try {
 				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 				inputStream = new ObjectInputStream(clientSocket.getInputStream());
+				Request req;
 				
-				Request req = clientCmd.start();
+				if(!connected)
+					req = clientCmd.connect();
+				else
+					req = clientCmd.start();
 				outputStream.writeObject(req);
 				outputStream.flush();
 
@@ -64,16 +70,29 @@ public class MainClient {
 				outputStream.close();
 				inputStream.close();
 				
-				if(query.getLabel().equals(Resource.CLOSE.toString()))
-					talk = false;
-				}
+				labelManagement(query.getLabel());
+				
+				Thread.sleep(1500); /** Pour laisser le temps de bien voir la réponse **/
+			}
 			 	
-			catch (IOException | ClassNotFoundException e) {
+			catch (IOException | ClassNotFoundException | InterruptedException e) {
 				CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}
 		catch (IOException e) {
 			CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
+	}
+	
+	/**
+	 * Manage the label (connection/close)
+	 * @param label query label to manage
+	 */
+	private static void labelManagement(String label){
+		if(label.equals(Resource.CLOSE.toString()))
+			talk = false;
+		
+		if(label.equals(Query.CONNECTED))
+			connected = true;
 	}
 }

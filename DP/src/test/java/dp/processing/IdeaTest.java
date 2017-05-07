@@ -11,6 +11,12 @@ import java.util.Map;
 
 import dp.exception.IdeaException;
 
+/**
+ * 
+ * Test class for Idea methods
+ * @author David Sene && Pierre Rainero
+ *
+ */
 public class IdeaTest {
 	private Idea idea;
 	private Student student1;

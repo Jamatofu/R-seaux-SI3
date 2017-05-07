@@ -3,6 +3,7 @@ package dp.processing;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import dp.exception.IdeaException;
 import dp.exception.RepositoryException;
@@ -47,7 +48,7 @@ public class Repository {
 	
 	private void checkAdmin(int ideaId, String applicantId) throws RepositoryException{
 		if(!ideas.get(ideaId).getAdmin().getId().equals(applicantId))
-			throw new RepositoryException(applicantId + " n'est pas administrateur de cette idée.");
+			throw new RepositoryException("Vous (\""+applicantId+"\") n'est pas administrateur de cette idée.");
 	}
 	
 	private void removeIdea(Idea ideaId){
@@ -130,26 +131,61 @@ public class Repository {
 	 * Allows to get a student from his id
 	 * @param id id of the student
 	 * @return the student object
+	 * @throws RepositoryException 
 	 */
-	public Student getStudent(String id){
-		return students.stream().filter(student -> student.getId().equals(id)).findFirst().get();
+	public Student getStudent(String id) throws RepositoryException{
+		Student student = null;
+		try{
+			student = students.stream().filter(etu -> etu.getId().equals(id)).findFirst().get();
+		}catch(NoSuchElementException e){
+			throw new RepositoryException("Il n'existe pas d'étudiant avec l'id : "+id);
+		}
+		return student;
 	}
 	
+	/**
+	 * Allows to change the state of a specific idea
+	 * @param ideaId id of the idea
+	 * @param applicantId id of the applicant student (should be admin)
+	 * @throws RepositoryException
+	 */
 	public void changeState(int ideaId, String applicantId) throws RepositoryException{
 		checkAdmin(ideaId, applicantId);
 		ideas.get(ideaId).changeState();
 	}
 	
+	/**
+	 * Allows to change the title of a specific idea
+	 * @param ideaId id of the idea
+	 * @param applicantId id of the applicant student (should be admin)
+	 * @param newTitle new title for the idea
+	 * @throws RepositoryException
+	 */
 	public void setTitle(int ideaId, String applicantId, String newTitle) throws RepositoryException{
 		checkAdmin(ideaId, applicantId);
 		ideas.get(ideaId).setTitle(newTitle);
 	}
 	
+	/**
+	 * Allows to change the description of a specific idea
+	 * @param ideaId id of the idea
+	 * @param applicantId id of the applicant student (should be admin)
+	 * @param newDescription new description for the idea
+	 * @throws RepositoryException
+	 */
 	public void setDescription(int ideaId, String applicantId, String newDescription) throws RepositoryException{
 		checkAdmin(ideaId, applicantId);
 		ideas.get(ideaId).setDescription(newDescription);
 	}
 	
+	/**
+	 * Allows to accept a contributor to a specific idea
+	 * @param ideaId id of the idea
+	 * @param applicantId id of the applicant student (should be admin)
+	 * @param idToAgree id of the student to agree
+	 * @throws RepositoryException
+	 * @throws IdeaException
+	 */
 	public void agreeContributor(int ideaId, String applicantId, String idToAgree) throws RepositoryException, IdeaException{
 		checkAdmin(ideaId, applicantId);
 		ideas.get(ideaId).agreeParticipant(getStudent(idToAgree));

@@ -17,7 +17,6 @@ import dp.exception.IdeaException;
 import dp.exception.RepositoryException;
 import dp.exception.RequestException;
 import dp.processing.Repository;
-import dp.processing.RequestOperator;
 
 
 /**

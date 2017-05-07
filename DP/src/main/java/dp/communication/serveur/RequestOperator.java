@@ -1,4 +1,4 @@
-package dp.processing;
+package dp.communication.serveur;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +11,9 @@ import dp.communication.Resource;
 import dp.exception.IdeaException;
 import dp.exception.RepositoryException;
 import dp.exception.RequestException;
+import dp.processing.Idea;
+import dp.processing.Repository;
+import dp.processing.Student;
 
 /**
  * 
@@ -68,6 +71,20 @@ public class RequestOperator {
 				
 			case STUDENT:
 				query = parseStudentMethod();
+				break;
+			
+			case CONNECTION:
+				if(request.getArgs().size()!=2)
+					throw new RequestException("Connexion : "+BADLY_FORMED);
+				
+				Student tmp = repository.getStudent(request.getArgs().get(0));
+				if(tmp.getPassword().equals(request.getArgs().get(1))){
+					query = new Query(Query.CONNECTED.toString());
+					query.addSentenceToQuery("Connexion réussit !");
+				}else{
+					query = new Query(Query.CONNECTION_FAIL.toString());
+					query.addSentenceToQuery("Mot de passe incorrect !");
+				}
 				break;
 				
 			case CLOSE:
@@ -252,8 +269,9 @@ public class RequestOperator {
 	/**
 	 * Add all ideas to the query
 	 * @return the query to send to the client
+	 * @throws RepositoryException 
 	 */
-	private Query allIdeas(String studentId){
+	private Query allIdeas(String studentId) throws RepositoryException{
 		List<Idea> ideas = repository.getAllIdeas(repository.getStudent(studentId));
 		Query query = new Query(Query.TOCLI);
 		defaultEmptyMessage(query, ideas);
@@ -284,8 +302,9 @@ public class RequestOperator {
 	 * Parse and execute the method for Student's resource
 	 * @return the query to send to the client
 	 * @throws RequestException
+	 * @throws RepositoryException 
 	 */
-	private Query parseStudentMethod() throws RequestException{
+	private Query parseStudentMethod() throws RequestException, RepositoryException{
 		Query query = null;
 		
 		switch(request.getMethod()){

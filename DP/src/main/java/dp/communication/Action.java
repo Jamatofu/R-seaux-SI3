@@ -7,16 +7,16 @@ package dp.communication;
  *
  */
 public enum Action {
-	ADD_CONTRIBUTOR(Resource.IDEA, "addContributor", 2, "ID ETUDIANT TO ADD (chaine) ", "ID IDEE (entier) "),
-	CHANGE_STATE(Resource.IDEA, "changeIdeaState", 2, "ID ADMIN (chaine) ", "ID IDEE (entier) "),
-	SET_TITLE(Resource.IDEA, "setIdeaTitle", 3, "ID ADMIN (chaine) ", "ID IDEE (entier) ", "Nouveau titre (chaine) "),
-	SET_DESCRIPTION(Resource.IDEA, "setIdeaDescription", 3, "ID ADMIN (chaine) ", "ID IDEE (entier) ", "Nouvelle description (chaine) "),
-	AGREE_CONTRIBUTOR(Resource.IDEA, "agreeAContributor", 2, "ID ADMIN (chaine) ", "ID IDEE (entier) ", "ID ETUDIANT TO AGREE (chaine) "),
+	ADD_CONTRIBUTOR(Resource.IDEA, "addContributor", 2, "A", "ID IDEE (entier) "),
+	CHANGE_STATE(Resource.IDEA, "changeIdeaState", 2, "A", "ID IDEE (entier) "),
+	SET_TITLE(Resource.IDEA, "setIdeaTitle", 3, "A", "ID IDEE (entier) ", "Nouveau titre (chaine) "),
+	SET_DESCRIPTION(Resource.IDEA, "setIdeaDescription", 3, "A", "ID IDEE (entier) ", "Nouvelle description (chaine) "),
+	AGREE_CONTRIBUTOR(Resource.IDEA, "agreeAContributor", 2, "A", "ID IDEE (entier) ", "ID ETUDIANT TO AGREE (chaine) "),
 	GET_CONTRIBUTORS(Resource.IDEA, "getContributors", 1, "ID IDEE (entier) "),
 	GET_ALL_IDEAS(Resource.REPOSITORY, "getAllIdeas", 0),
 	GET_ALL_IDEAS_FOR_ONE_STUDENT(Resource.REPOSITORY, "getAllIdeasForOneStudent", 1, "ID ADMIN (chaine) "),
 	ADD_IDEA(Resource.REPOSITORY, "addIdea", 3, "ID ADMIN/AUTEUR (chaine) ", "Titre (chaine) ", "Description (chaine) "),
-	REMOVE_IDEA(Resource.REPOSITORY, "removeIdea", 2, "ID ADMIN (chaine) ", "ID IDEE (entier) "),
+	REMOVE_IDEA(Resource.REPOSITORY, "removeIdea", 2, "A", "ID IDEE (entier) "),
 	GET_IDEA(Resource.REPOSITORY, "getIdea", 1, "ID IDEE (entier) "),
 	SET_PASSWORD(Resource.STUDENT,"setStudentPassword", 2, "ID ETUDIANT (chaine) ", "Nouveau mot de passe (chaine) "),
 	GET_PROJECTS(Resource.REPOSITORY, "getProjects", 0),
@@ -41,18 +41,34 @@ public enum Action {
 		this.instructions = instructions;
 	}
 
+	/**
+	  * Consulting accessor of the value for the RequestOperator
+	  * @return value for the RequestOperator
+	 */
 	public String getString() {
 		return value;
 	}
 	
+	/**
+	  * Consulting accessor of the resource to use/modify
+	  * @return resource to use/modify
+	 */
 	public Resource getResource(){
 		return resource;
 	}
 	
+	/**
+	 * Allows to know if there is an other instruction to do
+	 * @return true if there is and other instruction, false otherwise
+	 */
 	public boolean hasNextInstruction(){
 		return !(currentArg==instructions.length);
 	}
 	
+	/**
+	 * Return the next instruction to deliver to the client and proceeds to the next instruction
+	 * @return the next instruction to deliver to the client
+	 */
 	public String nextInstruction(){
 		currentArg++;
 		return instructions[currentArg-1];
@@ -65,7 +81,6 @@ public enum Action {
 	 */
 	public static Action getAction(String actionString){
 		return Action.findActionFormString(actionString);
-
 	}
 	
 	private static Action findActionFormString(String actionString){

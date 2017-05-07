@@ -7,6 +7,13 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+
+/**
+ * 
+ * Test class for Repository methods
+ * @author David Sene && Pierre Rainero
+ *
+ */
 public class RepositoryTest {
 	private Repository repository;
 	private Student student1;
