@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import dp.exception.RepositoryException;
+
 /**
  * 
  * Modelize a repository : a data center with all ideas and projects for a group of students
@@ -34,9 +36,25 @@ public class Repository {
 	/**
 	 * Allows to remove an idea
 	 * @param idea idea to remove from the repository
+	 * @param applicantId id of the operation applicant's
+	 * @throws RepositoryException 
 	 */
-	public void removeIdea(Idea idea){
-		ideas.remove(idea);
+	public void removeIdea(int ideaId, String applicantId) throws RepositoryException{
+		checkAdmin(ideaId, applicantId);
+		removeIdea(ideaId);
+	}
+	
+	private void checkAdmin(int ideaId, String applicantId) throws RepositoryException{
+		if(ideas.get(ideaId).getAdmin().getId().equals(applicantId))
+			throw new RepositoryException(applicantId + " n'est pas administrateur de cette idée.");
+	}
+	
+	private void removeIdea(int ideaId){
+		int i=ideas.indexOf(ideaId);
+		ideas.remove(ideaId);
+		for(;i<ideas.size();i++){
+			ideas.get(i).setId(i);
+		}
 	}
 	
 	/**
@@ -81,11 +99,11 @@ public class Repository {
 	 * @return list of all projects
 	 */
 	public List<Idea> getProjets(){
-		List<Idea> ideasForTheStudent = new ArrayList<>();
+		List<Idea> projects = new ArrayList<>();
 		Iterator<Idea> iterator = ideas.stream().filter(idea -> idea.getState()==State.PROJECT_STATE).iterator();
 		while(iterator.hasNext())
-			ideasForTheStudent.add(iterator.next());
-		return ideasForTheStudent;
+			projects.add(iterator.next());
+		return projects;
 	}
 
 	/**
@@ -114,5 +132,20 @@ public class Repository {
 	 */
 	public Student getStudent(String id){
 		return students.stream().filter(student -> student.getId().equals(id)).findFirst().get();
+	}
+	
+	public void changeState(int ideaId, String applicantId) throws RepositoryException{
+		checkAdmin(ideaId, applicantId);
+		ideas.get(ideaId).changeState();
+	}
+	
+	public void setTitle(int ideaId, String applicantId, String newTitle) throws RepositoryException{
+		checkAdmin(ideaId, applicantId);
+		ideas.get(ideaId).setTitle(newTitle);
+	}
+	
+	public void setDescription(int ideaId, String applicantId, String newDescription) throws RepositoryException{
+		checkAdmin(ideaId, applicantId);
+		ideas.get(ideaId).setDescription(newDescription);
 	}
 }

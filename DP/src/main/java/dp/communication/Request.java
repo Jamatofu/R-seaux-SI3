@@ -19,6 +19,13 @@ public class Request implements Serializable {
 	private String resource;
 	private String method;
 	private List<String> args;
+	
+	/**
+	 * Default constructor (close request)
+	 */
+	public Request(){
+		 this.resource = Query.CLOSE;
+	}
 	 
 	 /**
 	  * Normal constructor

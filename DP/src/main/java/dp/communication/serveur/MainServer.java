@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import dp.communication.Query;
 import dp.communication.Request;
 import dp.exception.IdeaException;
+import dp.exception.RepositoryException;
 import dp.exception.RequestException;
 import dp.processing.Repository;
 import dp.processing.RequestOperator;
@@ -60,10 +61,10 @@ public class MainServer {
 	 */
 	private static void startServer() throws ClassNotFoundException{
 		try { 
-			 serverSocket = new ServerSocket(9002); 
+			 serverSocket = new ServerSocket(9003); 
 		}
 		catch (IOException e){ 
-			SERVER_LOGGER.log(Level.SEVERE, "Impossible d'écouter le port : 9001", e);
+			SERVER_LOGGER.log(Level.SEVERE, "Impossible d'écouter le port : 9003", e);
 			System.exit(-1); 
 		}
 		while (listening){
@@ -85,12 +86,17 @@ public class MainServer {
 				if(query.getLabel().equals(Query.CLOSE))
 					closeServer();
 				
-			} catch (IOException | NumberFormatException | RequestException | IdeaException e) {
+			} catch (IOException | NumberFormatException e) {
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				e.printStackTrace(pw);
 				SERVER_LOGGER.log(Level.SEVERE, sw.toString(), e);
 				System.exit(-1); 
+			} catch (RequestException | IdeaException | RepositoryException e) {
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
+				SERVER_LOGGER.log(Level.WARNING, sw.toString(), e);
 			}
 				 
 		}

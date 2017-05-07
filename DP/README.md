@@ -25,19 +25,20 @@ Pour réalisé ce protocole nous avons mis en place un ensemble de classes que l
 - Repository
 
 ### Actions :
+Gestion d'un compte étudiant :
+ - **setPassword(idEtudiant, nouveauMdp)** : _Changer le mot de passe d'un étudiant_
+
 Sur la gestion des idées/projets : 
- - **addIdea(idEtudiant, titre, description)** : _ajouter une idée_
- - **changeState(idIdée)** : _Fais passer de l'état **idée** à l'état **projet**_
- - **removeIdea(idIdée)** : _supprimer une idée_
- - **changerDescription(idIdée, description)** : _changer la description d'un projet_
- - **getTitle(idIdée, titre)** : _changer le titre d'un projet
+ - **addIdea(idEtudiant, titre, description)** : _Ajouter une idée_
+ - **changeState(idIdée, applicantId)** : _Fais passer de l'état **idée** à l'état **projet**_
+ - **removeIdea(idIdée, applicantId)** : _Supprimer une idée_
+ - **setDescription(idIdée, applicantId, escription)** : _Changer la description d'un projet_
+ - **setTitle(idIdée, applicantId, titre)** : _Changer le titre d'un projet
  
 Permet de récupérer des idées/projets :
  - **getAll()** : _Récupère la liste de toutes les idées_
  - **getAllIdeas(idEtudiant)** : _Récupère la liste de toutes les idées d'un étudiant_
- - **getIdea(idIdée)** : _Récupère une idée entière_
- - **getDescription(idIdée)** : _Récupère la description d'une idée_
- - **getTitle(idIdée)** : _Récupère le nom d'une idée_
+ - **getIdea(idIdée)** : _Récupère le titre et la description d'une idée_
  
 Gère l'intéraction entre un étudiant et les idées :
  - **addContributor(idEtudiant, idIdée)** : _Ajoute un étudiant comme possible participant à un projet_
