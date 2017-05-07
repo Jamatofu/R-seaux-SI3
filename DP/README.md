@@ -33,7 +33,7 @@ Sur la gestion des idées/projets :
  - **changeState(idIdée, applicantId)** : _Fais passer de l'état **idée** à l'état **projet**_
  - **removeIdea(idIdée, applicantId)** : _Supprimer une idée_
  - **setDescription(idIdée, applicantId, escription)** : _Changer la description d'un projet_
- - **setTitle(idIdée, applicantId, titre)** : _Changer le titre d'un projet
+ - **setTitle(idIdée, applicantId, titre)** : _Changer le titre d'un projet_
  
 Permet de récupérer des idées/projets :
  - **getAll()** : _Récupère la liste de toutes les idées_
@@ -49,4 +49,4 @@ Pour le super utilisateur :
  - **getProjets()** : _Récupère tout les projets_
 
  ## Classes nécessaires/partagées (sérialisées) :
- Le serveur et le client doivent se partager les classes "Request" et "Query". Toutes les classes de processing et du server ne sont nécessaires qu'au serveur, le client ne manipule pas directement le "modèle", il intéragit avec grace au server (par le biais de "Request") et obtiens l'affichage de son action via "Query". Les classes du client ne sont bien sur nécessaires qu'au client.
+ Le serveur et le client doivent se partager toutes les classes du package "Communication" (soit "Request", "Query" et les énumérations "Resource", "Action"). Toutes les classes de processing et du server ne sont nécessaires qu'au serveur, le client ne manipule pas directement le "modèle", il intéragit avec grace au server (par le biais de "Request") et obtiens l'affichage de son action via "Query". Les classes du client ne sont bien sur nécessaires qu'au client.

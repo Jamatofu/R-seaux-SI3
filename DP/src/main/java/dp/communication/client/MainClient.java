@@ -49,7 +49,7 @@ public class MainClient {
 	 */
 	private static void startCli(){
 		try {
-			clientSocket = new Socket("192.168.1.14", 9003); //Adresse IP Pierre
+			clientSocket = new Socket("192.168.1.14", 9005); //Adresse IP Pierre
 			try {
 				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 				inputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -64,13 +64,11 @@ public class MainClient {
 				outputStream.close();
 				inputStream.close();
 				
-				Thread.sleep(2000); //Pour laisser le temps de voir la réponse
-				
 				if(query.getLabel().equals(Resource.CLOSE.toString()))
 					talk = false;
 				}
 			 	
-			catch (IOException | ClassNotFoundException | InterruptedException e) {
+			catch (IOException | ClassNotFoundException e) {
 				CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}

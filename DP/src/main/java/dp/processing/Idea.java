@@ -152,6 +152,6 @@ public class Idea {
 	 */
 	@Override
 	public String toString(){
-		return title + " :\n" + description + "\nParticipants : "+getValidatedContributorsSize()+"/"+MaxPerIdea;
+		return "____________\nID : "+id + "\n" + title + "\nParticipants : "+getValidatedContributorsSize()+"/"+MaxPerIdea+"\n____________\n";
 	}
 }

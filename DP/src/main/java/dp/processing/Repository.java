@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import dp.exception.IdeaException;
 import dp.exception.RepositoryException;
 
 /**
@@ -41,7 +42,7 @@ public class Repository {
 	 */
 	public void removeIdea(int ideaId, String applicantId) throws RepositoryException{
 		checkAdmin(ideaId, applicantId);
-		removeIdea(ideaId);
+		removeIdea(ideas.get(ideaId));
 	}
 	
 	private void checkAdmin(int ideaId, String applicantId) throws RepositoryException{
@@ -49,7 +50,7 @@ public class Repository {
 			throw new RepositoryException(applicantId + " n'est pas administrateur de cette idée.");
 	}
 	
-	private void removeIdea(int ideaId){
+	private void removeIdea(Idea ideaId){
 		int i=ideas.indexOf(ideaId);
 		ideas.remove(ideaId);
 		for(;i<ideas.size();i++){
@@ -147,5 +148,10 @@ public class Repository {
 	public void setDescription(int ideaId, String applicantId, String newDescription) throws RepositoryException{
 		checkAdmin(ideaId, applicantId);
 		ideas.get(ideaId).setDescription(newDescription);
+	}
+	
+	public void agreeContributor(int ideaId, String applicantId, String idToAgree) throws RepositoryException, IdeaException{
+		checkAdmin(ideaId, applicantId);
+		ideas.get(ideaId).agreeParticipant(getStudent(idToAgree));
 	}
 }

@@ -61,11 +61,12 @@ public class MainServer {
 	 * @throws ClassNotFoundException
 	 */
 	private static void startServer() throws ClassNotFoundException{
+		Query query = null;
 		try { 
-			 serverSocket = new ServerSocket(9003); 
+			 serverSocket = new ServerSocket(9005); 
 		}
 		catch (IOException e){ 
-			SERVER_LOGGER.log(Level.SEVERE, "Impossible d'écouter le port : 9003", e);
+			SERVER_LOGGER.log(Level.SEVERE, "Impossible d'écouter le port : 9005", e);
 			System.exit(-1); 
 		}
 		while (listening){
@@ -76,13 +77,9 @@ public class MainServer {
 				
 				Request request = (Request)inputStream.readObject();
 				RequestOperator reqOp = new RequestOperator(repository, request);
-				Query query = reqOp.execute();
+				query = reqOp.execute();
 				
-				outputStream.writeObject(query);
-				outputStream.flush();
-				
-				inputStream.close();
-				outputStream.close();
+				sendQuery(query);
 				
 				if(query.getLabel().equals(Resource.CLOSE.toString()))
 					closeServer();
@@ -98,9 +95,34 @@ public class MainServer {
 				PrintWriter pw = new PrintWriter(sw);
 				e.printStackTrace(pw);
 				SERVER_LOGGER.log(Level.WARNING, sw.toString(), e);
+				
+				query = new Query(Query.TOCLI);
+				query.addSentenceToQuery(e.getMessage());
+				try {
+					sendQuery(query);
+				} catch (IOException e1) {
+					sw = new StringWriter();
+					pw = new PrintWriter(sw);
+					e.printStackTrace(pw);
+					SERVER_LOGGER.log(Level.SEVERE, sw.toString(), e);
+					System.exit(-1); 
+				}
 			}
 				 
 		}
+	}
+	
+	/**
+	 * Send the query to the client
+	 * @param query query according to the resquest received
+	 * @throws IOException
+	 */
+	private static void sendQuery(Query query) throws IOException{
+		outputStream.writeObject(query);
+		outputStream.flush();
+		
+		inputStream.close();
+		outputStream.close();
 	}
 	
 	/**
