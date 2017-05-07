@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author jamatofu on 28/04/17.
@@ -13,27 +14,30 @@ import java.util.List;
 
 public class MainClient {
 
+    private static final String ADRESSE_SERVEUR = "127.0.0.1";
+    private static final int PORT = 4_000;
+
     public static void main(String[] args) {
-        Socket smtpSocket = null; // le socket client
-        PrintStream os = null; // output stream
+        Socket smtpSocket; // le socket client
+        PrintStream os; // output stream
         BufferedReader is = null; // input stream
+        Scanner scanner = new Scanner(System.in);
+
         try {
-            smtpSocket = new Socket("127.0.0.1", 4000);
+            smtpSocket = new Socket(ADRESSE_SERVEUR, PORT);
             os = new PrintStream(smtpSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(smtpSocket.getInputStream()));
 
+            while(scanner.hasNext()) {
+                os.print(scanner.nextLine());
+                os.flush();
+            }
 
-            String line;
-            line = is.readLine();
-            System.out.println(line);
-
-            os.println("Bonjour serveur");
-            os.flush();
-
+            smtpSocket.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: hostname");
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to: hostname");
+            System.err.println("Connexion impossible au serveur " + ADRESSE_SERVEUR);
         }
 
     }

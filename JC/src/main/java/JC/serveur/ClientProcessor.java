@@ -30,6 +30,8 @@ public class ClientProcessor implements Runnable {
                 System.out.println(read());
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Connexion perdue");
             }
         }
     }
@@ -40,11 +42,17 @@ public class ClientProcessor implements Runnable {
      * @throws IOException
      */
     private String read() throws IOException {
-        String response = "";
+        String response= "";
         int stream;
-        byte[] b = new byte[4096];
+        byte[] b = new byte[1024];
+
         stream = reader.read(b);
-        response = new String(b, 0, stream);
+        if(stream != -1) {
+            response = new String(b, 0, stream);
+        } else {
+            System.out.println("Fermeture de la connexion avec le client " + socket.getInetAddress());
+            socket.close();
+        }
         return response;
     }
 
