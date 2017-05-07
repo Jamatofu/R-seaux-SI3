@@ -5,10 +5,6 @@ import JC.communication.Response;
 import JC.serveur.data.IdeaManager;
 import JC.serveur.data.StudentManager;
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 /**
  * @author jamatofu on 28/04/17.
  */
@@ -18,27 +14,9 @@ public class MainServer {
     private IdeaManager ideas = new IdeaManager();
 
     public static void main(String args[]) {
-        ServerSocket myServer = null;
-        String line;
-        BufferedReader is;
-        PrintStream os;
-        Socket clientSocket = null;
-        try { myServer = new ServerSocket(4000);}
-        catch (IOException e) {System.out.println(e); }
-        try {
-            clientSocket = myServer.accept();
-            os = new PrintStream(clientSocket.getOutputStream());
-            is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            os.println("Bienvenue client");
-            os.flush();
-            while (true) {
-                line = is.readLine();
-                os.println(line);
-                System.out.println(line);
-            }
-        }
-        catch (IOException e) {
-            System.out.println(e);}
+        Server server = new Server();
+        server.runServer();
+        server.connectToClient();
     }
     private void readQuery(Query query){
 

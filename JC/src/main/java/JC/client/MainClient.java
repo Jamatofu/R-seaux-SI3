@@ -18,7 +18,7 @@ public class MainClient {
         PrintStream os = null; // output stream
         BufferedReader is = null; // input stream
         try {
-            smtpSocket = new Socket("10.212.102.143", 4000);
+            smtpSocket = new Socket("127.0.0.1", 4000);
             os = new PrintStream(smtpSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(smtpSocket.getInputStream()));
 
