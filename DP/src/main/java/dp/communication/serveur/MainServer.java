@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import dp.communication.Query;
 import dp.communication.Request;
+import dp.communication.Resource;
 import dp.exception.IdeaException;
 import dp.exception.RepositoryException;
 import dp.exception.RequestException;
@@ -83,7 +84,7 @@ public class MainServer {
 				inputStream.close();
 				outputStream.close();
 				
-				if(query.getLabel().equals(Query.CLOSE))
+				if(query.getLabel().equals(Resource.CLOSE.toString()))
 					closeServer();
 				
 			} catch (IOException | NumberFormatException e) {

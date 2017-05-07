@@ -45,7 +45,7 @@ public class Repository {
 	}
 	
 	private void checkAdmin(int ideaId, String applicantId) throws RepositoryException{
-		if(ideas.get(ideaId).getAdmin().getId().equals(applicantId))
+		if(!ideas.get(ideaId).getAdmin().getId().equals(applicantId))
 			throw new RepositoryException(applicantId + " n'est pas administrateur de cette idée.");
 	}
 	

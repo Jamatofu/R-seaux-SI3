@@ -17,7 +17,6 @@ public class Query implements Serializable {
 	private static final long serialVersionUID = -4871192679406809330L;
 	
 	public final static String TOCLI = "tocli";
-	public final static String CLOSE = "close";
 	private String label;
 	private List<String> structuredQuery;
 	

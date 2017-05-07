@@ -16,15 +16,15 @@ public class Request implements Serializable {
 	 */
 	private static final long serialVersionUID = -3812204783588350556L;
 	
-	private String resource;
-	private String method;
+	private Resource resource;
+	private Action method;
 	private List<String> args;
 	
 	/**
 	 * Default constructor (close request)
 	 */
 	public Request(){
-		 this.resource = Query.CLOSE;
+		 this.resource = Resource.CLOSE;
 	}
 	 
 	 /**
@@ -32,7 +32,7 @@ public class Request implements Serializable {
 	  * @param resource kind of class to modify
 	  * @param method method to use
 	  */
-	 public Request(String resource, String method){
+	 public Request(Resource resource, Action method){
 		 this.resource = resource;
 		 this.method = method;
 		 args = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Request implements Serializable {
 	  * Consulting accessor of the resource
 	  * @return request's resource
 	  */
-	 public String getResource(){
+	 public Resource getResource(){
 		 return resource;
 	 }
 	 
@@ -58,7 +58,7 @@ public class Request implements Serializable {
 	  * Consulting accessor of the method
 	  * @return request's method
 	  */
-	 public String getMethod() {
+	 public Action getMethod() {
 		return method;
 	 }
 

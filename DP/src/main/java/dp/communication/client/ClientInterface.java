@@ -13,14 +13,14 @@ public class ClientInterface {
 		input = new Scanner(System.in);	
 	}
 	
-	public void start(Request requestToSend){
+	public Request start(){
 		System.out.println("Commandes disponibles : ");
 		listOfActions();
 		Optional<Request> request = execute(readInput());
 		if(request.isPresent())
-			requestToSend = request.get();
+			return request.get();
 		else 
-			start(requestToSend);
+			return new Request();
 	}
 	
 	private void listOfActions(){
@@ -34,14 +34,21 @@ public class ClientInterface {
 		if(input.equals("q")){
 			returnV = Optional.of(new Request()); 
 		}
-		else if(Action.valueOf(input)!=Action.NONE)
-			returnV = Optional.of(new Request());
+		else if(Action.getAction(input)!=Action.NONE){
+			Action actionToDo = Action.getAction(input);
+			Request tmpRequest = new Request(actionToDo.getResource(), actionToDo);
+			while(actionToDo.hasNextInstruction()){
+				System.out.print(actionToDo.nextInstruction());
+				tmpRequest.addArgs(readInput());
+			}
+			returnV = Optional.of(tmpRequest);
+		}
 
 		return returnV;
 	}
 	
 	private String readInput() {
-		System.out.println(">");
+		System.out.print(">");
 		return input.nextLine();
 	}
 }

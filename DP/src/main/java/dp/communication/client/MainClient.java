@@ -7,9 +7,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import dp.communication.Action;
 import dp.communication.Query;
 import dp.communication.Request;
+import dp.communication.Resource;
 
 /**
  * 
@@ -23,6 +23,7 @@ public class MainClient {
 	private static ObjectInputStream inputStream;
 	private static final Logger CLIENT_LOGGER = Logger.getLogger(MainClient.class.getName());
 	private static ClientInterface clientCmd;
+	private static boolean talk;
 	
 	/**
 	 * Start the client
@@ -30,7 +31,8 @@ public class MainClient {
 	 */
 	public static void main(String[] args){
 		initVars();
-		startCli();
+		while(talk)
+			startCli();
 	}
 	
 	/**
@@ -39,6 +41,7 @@ public class MainClient {
 	private static void initVars(){
 		clientSocket = null;
 		clientCmd = new ClientInterface();
+		talk = true;
 	}
 	
 	/**
@@ -51,20 +54,23 @@ public class MainClient {
 				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 				inputStream = new ObjectInputStream(clientSocket.getInputStream());
 				
-				Request req = new Request();
-				clientCmd.start(req);
-				/*req = new Request("Idea", Action.ADD_CONTRIBUTOR.getString());
-				req.addArgs("0");
-				req.addArgs("ab012987");*/
+				Request req = clientCmd.start();
 				outputStream.writeObject(req);
 				outputStream.flush();
 
 				Query query = (Query)inputStream.readObject();
-				System.out.println(query.toString());
+				System.out.println("---------------\n"+query.toString());
+				
 				outputStream.close();
 				inputStream.close();
+				
+				Thread.sleep(2000); //Pour laisser le temps de voir la réponse
+				
+				if(query.getLabel().equals(Resource.CLOSE.toString()))
+					talk = false;
 				}
-			catch (IOException | ClassNotFoundException e) {
+			 	
+			catch (IOException | ClassNotFoundException | InterruptedException e) {
 				CLIENT_LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}

@@ -6,10 +6,10 @@ import java.util.Map.Entry;
 
 import dp.communication.Query;
 import dp.communication.Request;
+import dp.communication.Resource;
 import dp.exception.IdeaException;
 import dp.exception.RepositoryException;
 import dp.exception.RequestException;
-import dp.communication.Action;
 
 /**
  * 
@@ -49,20 +49,20 @@ public class RequestOperator {
 		Query query = null;
 		
 		switch(request.getResource()){
-			case "Idea":
+			case IDEA:
 				query = parseIdeaMethod();
 				break;
 				
-			case "Repository":
+			case REPOSITORY:
 				query = parseRepositoryMethod();
 				break;
 				
-			case "Student":
+			case STUDENT:
 				query = parseStudentMethod();
 				break;
 				
-			case Query.CLOSE:
-				query = new Query(Query.CLOSE);
+			case CLOSE:
+				query = new Query(Resource.CLOSE.toString());
 				query.addSentenceToQuery("Le serveur a bien été fermé !");
 				break;
 			
@@ -77,16 +77,16 @@ public class RequestOperator {
 		Query query = null;
 		Idea tmp = null;
 		
-		switch(Action.getAction(request.getMethod())){
+		switch(request.getMethod()){
 			case ADD_CONTRIBUTOR:
 				if(request.getArgs().size()!=2)
 					throw new RequestException("Idea-addContributor : "+BADLY_FORMED);
 				
-				tmp = repository.getIdea(Integer.valueOf(request.getArgs().get(0)));
-				tmp.addContributor(repository.getStudent(request.getArgs().get(1)));
+				tmp = repository.getIdea(Integer.valueOf(request.getArgs().get(1)));
+				tmp.addContributor(repository.getStudent(request.getArgs().get(0)));
 				query = new Query(Query.TOCLI); 
 				query.addSentenceToQuery(IDEA+tmp.getTitle());
-				query.addSentenceToQuery("Demandeur : "+repository.getStudent(request.getArgs().get(1)).getId());
+				query.addSentenceToQuery("Demandeur : "+repository.getStudent(request.getArgs().get(0)).getId());
 				query.addSentenceToQuery("Demande effectuée avec succès !");
 				break;
 				
@@ -95,7 +95,7 @@ public class RequestOperator {
 					throw new RequestException("Idea-changeState : "+BADLY_FORMED);
 				
 				tmp = repository.getIdea(Integer.valueOf(request.getArgs().get(1)));
-				repository.changeState(Integer.valueOf(request.getArgs().get(0)), request.getArgs().get(1));
+				repository.changeState(Integer.valueOf(request.getArgs().get(1)), request.getArgs().get(0));
 				query = new Query(Query.TOCLI); 
 				query.addSentenceToQuery("\""+tmp.getTitle()+"\" est désormais un projet !");
 				break;
@@ -107,7 +107,7 @@ public class RequestOperator {
 				tmp = repository.getIdea(Integer.valueOf(request.getArgs().get(1)));
 				query = new Query(Query.TOCLI);
 				query.addSentenceToQuery("Ancien nom : "+tmp.getTitle());
-				repository.setTitle(Integer.valueOf(request.getArgs().get(0)), request.getArgs().get(1), request.getArgs().get(2));
+				repository.setTitle(Integer.valueOf(request.getArgs().get(1)), request.getArgs().get(0), request.getArgs().get(2));
 				query.addSentenceToQuery("Nouveau nom : "+tmp.getTitle());
 				break;
 				
@@ -156,7 +156,7 @@ public class RequestOperator {
 		Query query = null;
 		Idea tmp = null;
 		
-		switch(Action.getAction(request.getMethod())){
+		switch(request.getMethod()){
 			case GET_ALL_IDEAS: case GET_ALL_IDEAS_FOR_ONE_STUDENT :
 				if(request.getArgs().size()>1)
 					throw new RequestException("Repository-getAllIdeas : "+BADLY_FORMED);
@@ -225,7 +225,7 @@ public class RequestOperator {
 	private Query parseStudentMethod() throws RequestException{
 		Query query = null;
 		
-		switch(Action.getAction(request.getMethod())){
+		switch(request.getMethod()){
 			case SET_PASSWORD:
 				if(request.getArgs().size()!=2)
 					throw new RequestException("Student-setPassword : "+BADLY_FORMED);
