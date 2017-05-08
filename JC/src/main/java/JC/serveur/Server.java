@@ -1,11 +1,12 @@
 package JC.serveur;
 
-import java.io.BufferedReader;
+import JC.serveur.data.Idea;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Permet de créer un serveur. Celui ci gère les connexions clients et les demandes faites par ces derniers
@@ -13,12 +14,17 @@ import java.net.Socket;
  */
 public class Server {
     private ServerSocket server;
-    private BufferedReader reader;
-    private PrintStream writer;
     private Socket clientSocket;
     private boolean isRunning;
 
     private static final int PORT = 4_000;
+
+    public static List<Idea> ideaList = new ArrayList<Idea>() {{
+        add(new Idea("Premiere idee de fou", "Idée 1"));
+        add(new Idea("Deuxieme idee de fou", "Idée 2"));
+        add(new Idea("Troisieme idee de fou", "Idée 3"));
+        add(new Idea("Premier projet de fou", "Projet", false));
+    }};
 
     /**
      * Permet de lancer le serveur
@@ -47,8 +53,6 @@ public class Server {
                     try {
                         clientSocket = server.accept();
                         System.out.println("Le client " + clientSocket.getInetAddress().toString() + " s'est connecté.");
-                        reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        writer = new PrintStream(clientSocket.getOutputStream());
                         Thread t = new Thread(new ClientProcessor(clientSocket));
                         t.start();
 

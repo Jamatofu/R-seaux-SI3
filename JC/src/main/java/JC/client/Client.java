@@ -2,6 +2,7 @@ package JC.client;
 
 import JC.communication.Action;
 import JC.communication.Query;
+import JC.serveur.Reply;
 
 import java.io.*;
 import java.net.Socket;
@@ -20,8 +21,10 @@ public class Client {
 
     private Socket smtpSocket; // le socket client
     private PrintStream os; // output stream
-    private BufferedReader is; // input stream
+    private BufferedInputStream is; // input stream
     private Scanner scanner;
+
+    private ObjectInputStream readerObject;
     private ObjectOutputStream senderObject;
 
     private int idClient;
@@ -30,13 +33,20 @@ public class Client {
         connectToServer();
     }
 
+    /**
+     * Se connecte au serveur
+     */
     private void connectToServer() {
         try {
             smtpSocket = new Socket(ADRESSE_SERVEUR, PORT);
+
             os = new PrintStream(smtpSocket.getOutputStream());
-            is = new BufferedReader(new InputStreamReader(smtpSocket.getInputStream()));
+            is = new BufferedInputStream(smtpSocket.getInputStream());
+
             scanner = new Scanner(System.in);
+
             senderObject = new ObjectOutputStream(os);
+            readerObject = new ObjectInputStream(is);
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -45,6 +55,10 @@ public class Client {
         }
     }
 
+    /**
+     * Lis l'entrée de l'utilisateur et envoie au serveur la requête
+     * Affiche la réponse du serveur
+     */
     public void readEntry() {
         String entry;
         Optional<Query> query;
@@ -59,23 +73,27 @@ public class Client {
                 }
 
                 query = verifyEntry(entry);
-                // TODO verifier que l'entrée est une action => la transformer => l'envoyer
 
                 if(query.isPresent()) {
                     senderObject.writeObject(query.get());
                     os.flush();
-                    System.out.println("Requete " + query.get().getAction() + " bien envoyée.");
                 }
 
-                // TODO ecrire la réponse
+                System.out.println((Reply) readerObject.readObject());
+
             } while(scanner.hasNext());
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
         System.out.println("Vous quittez le client");
     }
 
+    /**
+     * Permet d'enregistrer d'ID du client
+     */
     public void registerId() {
         String entry = "";
         System.out.println("Entrer votre ID");
@@ -87,6 +105,9 @@ public class Client {
         System.out.println("Vous êtes connecté en tant que l'utilisateur " + idClient);
     }
 
+    /**
+     * Ferme la connexion
+     */
     public void closeConnexion() {
         try {
             smtpSocket.close();
@@ -95,6 +116,11 @@ public class Client {
         }
     }
 
+    /**
+     * Vérifie que la chaine entrée par l'utilisateur correspond à une commande bie nformée
+     * @param entry la chaine à examiner
+     * @return un objet Query bien formé
+     */
     private Optional<Query> verifyEntry(String entry) {
         String arg[] = entry.split(" ");
         Action action;
@@ -111,9 +137,5 @@ public class Client {
 
         System.out.println("Commande non correcte.");
         return Optional.empty();
-    }
-
-    private void sendQuery() {
-
     }
 }

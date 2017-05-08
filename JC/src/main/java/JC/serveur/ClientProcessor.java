@@ -1,11 +1,9 @@
 package JC.serveur;
 
 import JC.communication.Query;
+import JC.serveur.data.Idea;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -14,9 +12,12 @@ import java.net.Socket;
  */
 public class ClientProcessor implements Runnable {
     private Socket socket;
-    private PrintWriter writer;
+
+    private PrintStream writer;
     private BufferedInputStream reader;
+
     private ObjectInputStream readerObject;
+    private ObjectOutputStream senderObject;
 
     public ClientProcessor(Socket socket) {
         this.socket = socket;
@@ -26,21 +27,30 @@ public class ClientProcessor implements Runnable {
     public void run() {
         System.out.println("Traitement de la connexion client");
 
-        while (!socket.isClosed()) {
+        while (!socket.isClosed() || !socket.isConnected()) {
             try {
-                writer = new PrintWriter(socket.getOutputStream());
+                writer = new PrintStream(socket.getOutputStream());
                 reader = new BufferedInputStream(socket.getInputStream());
-                readerObject = new ObjectInputStream(reader);
 
-                System.out.println(((Query) readerObject.readObject()).toString());
+                readerObject = new ObjectInputStream(reader);
+                senderObject = new ObjectOutputStream(writer);
+
+                Reply reply = executeQuery((Query) readerObject.readObject());
+                senderObject.writeObject(reply);
+                writer.flush();
 
                 readerObject.close();
-//                System.out.println(read());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 System.out.println("Requete mal faites");
             }
+        }
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -64,8 +74,27 @@ public class ClientProcessor implements Runnable {
         return response;
     }
 
-    private void write() {
-        writer.write("Salut mon poulet <3");
-        writer.flush();
+    private Reply executeQuery(Query query) {
+        String[] param = query.getParameters();
+        Reply reply = new Reply();
+
+        switch (query.getAction()) {
+            case AJOUTER_IDEE:
+                Server.ideaList.add(new Idea(param[0], param[1]));
+                System.out.println("Le client " + socket.getInetAddress() + " a ajouté une idée");
+                reply.addSentence("Votre idée a bien été ajoutée.");
+                break;
+            case GET_ALL_IDEA:
+                System.out.println("Le client " + socket.getInetAddress() + " récupère toutes les idées.");
+                for(Idea idea : Server.ideaList) {
+                    reply.addSentence(idea.toString());
+                }
+                break;
+            default:
+                reply.addSentence("Votre requête est incorrecte.");
+                break;
+        }
+
+        return reply;
     }
 }

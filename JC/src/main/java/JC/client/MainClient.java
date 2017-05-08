@@ -10,6 +10,7 @@ public class MainClient {
         Client client = new Client();
         client.registerId();
         client.readEntry();
+        client.closeConnexion();
     }
 }
 

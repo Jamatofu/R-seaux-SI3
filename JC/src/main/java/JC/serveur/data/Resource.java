@@ -7,6 +7,6 @@ package JC.serveur.data;
  * @author Julien Maureille
  */
 public abstract class Resource {
-    protected String id;
+    protected int id;
     public abstract String toString();
 }
