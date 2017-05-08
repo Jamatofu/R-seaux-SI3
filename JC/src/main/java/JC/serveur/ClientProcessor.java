@@ -1,7 +1,10 @@
 package JC.serveur;
 
+import JC.communication.Query;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -13,6 +16,7 @@ public class ClientProcessor implements Runnable {
     private Socket socket;
     private PrintWriter writer;
     private BufferedInputStream reader;
+    private ObjectInputStream readerObject;
 
     public ClientProcessor(Socket socket) {
         this.socket = socket;
@@ -26,12 +30,16 @@ public class ClientProcessor implements Runnable {
             try {
                 writer = new PrintWriter(socket.getOutputStream());
                 reader = new BufferedInputStream(socket.getInputStream());
+                readerObject = new ObjectInputStream(reader);
 
-                System.out.println(read());
+                System.out.println(((Query) readerObject.readObject()).toString());
+
+                readerObject.close();
+//                System.out.println(read());
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (StringIndexOutOfBoundsException e) {
-                System.out.println("Connexion perdue");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Requete mal faites");
             }
         }
     }

@@ -33,4 +33,20 @@ public enum Action {
         this.nbArg = nbArg;
         this.args = args;
     }
+
+    public TypeAction getTypeAction() {
+        return typeAction;
+    }
+
+    public String getNomMethode() {
+        return nomMethode;
+    }
+
+    public int getNbArg() {
+        return nbArg;
+    }
+
+    public String[] getArgs() {
+        return args;
+    }
 }

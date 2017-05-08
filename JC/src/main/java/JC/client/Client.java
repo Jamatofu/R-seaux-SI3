@@ -1,12 +1,14 @@
 package JC.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import JC.communication.Action;
+import JC.communication.Query;
+
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -20,6 +22,7 @@ public class Client {
     private PrintStream os; // output stream
     private BufferedReader is; // input stream
     private Scanner scanner;
+    private ObjectOutputStream senderObject;
 
     private int idClient;
 
@@ -33,6 +36,8 @@ public class Client {
             os = new PrintStream(smtpSocket.getOutputStream());
             is = new BufferedReader(new InputStreamReader(smtpSocket.getInputStream()));
             scanner = new Scanner(System.in);
+            senderObject = new ObjectOutputStream(os);
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -42,21 +47,31 @@ public class Client {
 
     public void readEntry() {
         String entry;
-        do {
-            System.out.println("\nTaper votre commande : ");
-            entry = scanner.nextLine();
+        Optional<Query> query;
 
-            if(Objects.equals(entry, "q")) {
-                break;
-            }
+        try {
+            do {
+                System.out.println("\nTaper votre commande : ");
+                entry = scanner.nextLine();
 
-            // TODO verifier que l'entrée est une action => la transformer => l'envoyer
+                if(Objects.equals(entry, "q")) {
+                    break;
+                }
 
-            os.print(entry);
-            os.flush();
+                query = verifyEntry(entry);
+                // TODO verifier que l'entrée est une action => la transformer => l'envoyer
 
-            // TODO ecrire la réponse
-        } while(scanner.hasNext());
+                if(query.isPresent()) {
+                    senderObject.writeObject(query.get());
+                    os.flush();
+                    System.out.println("Requete " + query.get().getAction() + " bien envoyée.");
+                }
+
+                // TODO ecrire la réponse
+            } while(scanner.hasNext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Vous quittez le client");
     }
@@ -78,6 +93,24 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Optional<Query> verifyEntry(String entry) {
+        String arg[] = entry.split(" ");
+        Action action;
+
+        try {
+            action = Action.valueOf(arg[0].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            action = null;
+        }
+
+        if(action != null && (arg.length - 1) == action.getNbArg()) {
+           return Optional.of(new Query(action, Arrays.copyOfRange(arg, 1, arg.length)));
+        }
+
+        System.out.println("Commande non correcte.");
+        return Optional.empty();
     }
 
     private void sendQuery() {

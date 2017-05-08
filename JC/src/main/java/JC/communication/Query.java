@@ -1,9 +1,7 @@
 package JC.communication;
 
-import JC.serveur.data.Action;
-
 import java.io.Serializable;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * Created on 28/04/2017.
@@ -12,13 +10,27 @@ import java.util.List;
  * @author Julien Maureille
  */
 public class Query implements Serializable {
-    private String resource;
-    private String action; //ajouter, supprimer, lister...
-    private List<String> parameters;
+    private Action action; //ajouter, supprimer, lister...
+    private String[] parameters;
 
-    public Query(String action, String resource, List<String> parameters) {
-        this.resource = resource;
+    public Query(Action action, String[] parameters) {
         this.action = action;
         this.parameters = parameters;
+    }
+
+    @Override
+    public String toString() {
+        return "Query{" +
+                "action=" + action +
+                ", parameters=" + Arrays.toString(parameters) +
+                '}';
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public String[] getParameters() {
+        return parameters;
     }
 }
