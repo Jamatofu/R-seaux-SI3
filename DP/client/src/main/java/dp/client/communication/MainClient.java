@@ -51,7 +51,7 @@ public class MainClient {
 	 */
 	private static void startCli(){
 		try {
-			clientSocket = new Socket("192.168.1.14", 9010); /** Adresse de Pierre **/
+			clientSocket = new Socket("127.0.0.1", 9100); /** Adresse de Pierre **/
 			try {
 				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 				inputStream = new ObjectInputStream(clientSocket.getInputStream());
