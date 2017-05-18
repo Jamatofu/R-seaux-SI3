@@ -4,7 +4,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class HelloWorldImplem extends UnicastRemoteObject implements HelloWorld {
  
-	protected HelloWorldImplem() throws RemoteException {
+	public HelloWorldImplem() throws RemoteException {
 		super();
 	}
 

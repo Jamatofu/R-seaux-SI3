@@ -1,4 +1,4 @@
-package dp.serveur.communication;
+package dp.server.communication;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
