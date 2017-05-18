@@ -1,52 +1,31 @@
 # PARTIE : David Sene && Pierre Rainero
 
-## Liste des requêtes :
-- S'identifier
-- Ajouter une idée
-- Participer à une idée
-- Lister les étudiants par idée
-- Se déconnecter
-- Administration d'idée
-	- Approuver la participation d'un étudiant à une idée
-	- Changer statut : idée => projet
-	- Modifier l'idée
-	- Pouvoir lister ses propres idées
+1. Lancer le registre en lui passant en parametre le path vers les .class du package common :  
+	
+	Exemple : start rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false -J-Djava.rmi.server.codebase=file:C:\Users\hp\Documents\java_workplace\R-seaux-SI3\DP\common\target\classes\
+	
+	
+2. Lancer le serveur (RmiServer) normalement sous eclipse puis le client (ClientRmi).    
 
-## Fonctionnement :
-Pour réalisé ce protocole nous avons mis en place un ensemble de classes que l'on peut découper en 4 packages : 
-1. "Processing", soit le "modèle" de notre application (une idée, un étudiant, etc...)
-2. "Communication", soit une classe "Request" et une classe "Query. "Request" qui va correspondre à un objet sérialisable qui sera envoyé par le client vers le serveur. Ce dernier va alors l'interpréter et effectuer l'action correspondante grace aux attributs de cet object (resource <=> classe du modèle à utiliser, method <=> méthode à utiliser, args <=> argmuents nécessaire pour trouver l'objet à modifier/créer et pour la méthode). Le server va alors renvoyer un object "Query" au client.
-3. Le server.
-4. Le client.
 
-### Ressources : 
-- Idea
-- Student
-- Repository
 
-### Actions :
-Gestion d'un compte étudiant :
- - **setPassword(idEtudiant, nouveauMdp)** : _Changer le mot de passe d'un étudiant_
 
-Sur la gestion des idées/projets : 
- - **addIdea(idEtudiant, titre, description)** : _Ajouter une idée_
- - **changeState(idIdée, applicantId)** : _Fais passer de l'état **idée** à l'état **projet**_
- - **removeIdea(idIdée, applicantId)** : _Supprimer une idée_
- - **setDescription(idIdée, applicantId, escription)** : _Changer la description d'un projet_
- - **setTitle(idIdée, applicantId, titre)** : _Changer le titre d'un projet_
- 
-Permet de récupérer des idées/projets :
- - **getAll()** : _Récupère la liste de toutes les idées_
- - **getAllIdeas(idEtudiant)** : _Récupère la liste de toutes les idées d'un étudiant_
- - **getIdea(idIdée)** : _Récupère le titre et la description d'une idée_
- 
-Gère l'intéraction entre un étudiant et les idées :
- - **addContributor(idEtudiant, idIdée)** : _Ajoute un étudiant comme possible participant à un projet_
- - **agreeParticipant(idEtudiant, idIdée)** : _Valide un étudiant comme partipant à un projet_
- - **getContributors(idIdée)** : _Récupère les candidats d'un projet_
- 
-Pour le super utilisateur :
- - **getProjets()** : _Récupère tout les projets_
+#MODIFICATIONS EFFECTUEES:  
 
- ## Classes nécessaires/partagées (sérialisées) :
- Le serveur et le client doivent se partager toutes les classes du package "communication" (soit "Request", "Query" et les énumérations "Resource", "Action"). Toutes les classes du package "processing" et du package "server" ne sont nécessaires qu'au serveur, le client ne manipule pas directement le "modèle", il intéragit avec grace au server (par le biais de "Request") et obtiens l'affichage de son action via "Query". Les classes du package "client" ne sont bien sur nécessaires qu'au client.
+1. Ajout de l'interface Repository   
+
+2. Deplacement des classes Idea et Student dans le package common pour qu'ils soient accessibles par le client.(mais seulement sous forme de copies des objets presents sur le serveur)  
+
+3. Modification des  classes Idea et Student pour qu'elles implementent Serializable (puisque les copies des objets transitent par le reseau)  
+
+4. Redefinition de la methode equals dans les classes Idea et Student pour eviter des incoherances dues a la copie des objets  
+  
+  
+#ATTENTION :  
+
+Lorsqu'un objet non distant (c'est le cas de Idea et Student) est passé comme parametre lors d'un appel distant ou est retourné comme resultat, il est completement copié    
+
+
+#A VERIFIER:  
+Il faut maintenant verifier la coherence de certains appels de methodes distantes a cause de la copies des objets de type Idea et Student  
+
