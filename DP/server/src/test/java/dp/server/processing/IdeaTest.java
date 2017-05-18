@@ -9,9 +9,9 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Map;
 
-import dp.server.exception.IdeaException;
-import dp.server.processing.Idea;
-import dp.server.processing.Student;
+import dp.common.communication.Idea;
+import dp.common.communication.Student;
+import dp.common.exception.IdeaException;
 
 /**
  * 

@@ -1,12 +1,12 @@
-package dp.server.exception;
+package dp.common.exception;
 
 /**
  * 
- * Exception class for Idea
+ * Exception class for Request
  * @author David Sene && Pierre Rainero
  *
  */
-public class IdeaException extends Exception {
+public class RequestException extends Exception {
 	/**
 	 * Default serialID
 	 */
@@ -16,7 +16,8 @@ public class IdeaException extends Exception {
 	 * Normal constructor
 	 * @param message message of the exception
 	 */
-	public IdeaException(String message){
+	public RequestException(String message){
 		super(message);
 	}
+
 }

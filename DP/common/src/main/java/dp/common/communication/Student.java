@@ -1,4 +1,6 @@
-package dp.server.processing;
+package dp.common.communication;
+
+import java.io.Serializable;
 
 /**
  * 
@@ -6,7 +8,9 @@ package dp.server.processing;
  * @author David Sene && Pierre Rainero
  *
  */
-public class Student {
+public class Student implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String password;
 
@@ -43,4 +47,29 @@ public class Student {
 	public void setPassword(String newPass){
 		password = newPass;
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Student))
+			return false;
+		Student other = (Student) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		return true;
+	}
+	
+	
 }

@@ -1,12 +1,15 @@
-package dp.server.processing;
+package dp.common.communication;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import dp.server.exception.IdeaException;
-import dp.server.exception.RepositoryException;
+import dp.common.exception.IdeaException;
+import dp.common.exception.RepositoryException;
+
 
 /**
  * 
@@ -14,14 +17,18 @@ import dp.server.exception.RepositoryException;
  * @author David Sene && Pierre Rainero
  *
  */
-public class Repository {	
+public class RepositoryImplem extends UnicastRemoteObject implements Repository{
+	
+	
+	private static final long serialVersionUID = 1L;
+	
 	private List<Idea> ideas;
 	private List<Student> students;
 	
 	/**
 	 * Default constructor
 	 */
-	public Repository(){
+	public RepositoryImplem() throws RemoteException{
 		ideas = new ArrayList<>();
 		students = new ArrayList<>();
 	}

@@ -1,11 +1,13 @@
-package dp.server.processing;
+package dp.common.communication;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import dp.server.exception.IdeaException;;
+import dp.common.exception.IdeaException;
+
 
 /**
  * 
@@ -13,7 +15,9 @@ import dp.server.exception.IdeaException;;
  * @author David Sene && Pierre Rainero
  *
  */
-public class Idea {
+public class Idea implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private static final int MaxPerIdea = 3; 
 	private Student admin; 
@@ -154,4 +158,24 @@ public class Idea {
 	public String toString(){
 		return "____________\nID : "+id + "\n" + title + "\nParticipants : "+getValidatedContributorsSize()+"/"+MaxPerIdea+"\n____________\n";
 	}
+
+
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Idea))
+			return false;
+		Idea other = (Idea) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	
+	
+	
 }

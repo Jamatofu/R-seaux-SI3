@@ -3,12 +3,13 @@ package dp.server.processing;
 import org.junit.Before;
 import org.junit.Test;
 
-import dp.server.processing.Idea;
-import dp.server.processing.Repository;
-import dp.server.processing.Student;
+import dp.common.communication.Idea;
+import dp.common.communication.RepositoryImplem;
+import dp.common.communication.Student;
 
 import static org.junit.Assert.*;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 
@@ -19,14 +20,14 @@ import java.util.List;
  *
  */
 public class RepositoryTest {
-	private Repository repository;
+	private RepositoryImplem repository;
 	private Student student1;
 	private Student student2;
 	private Student student3;
 	
 	@Before
-	public void defineContext(){
-		repository = new Repository();
+	public void defineContext() throws RemoteException{
+		repository = new RepositoryImplem();
 		
 		student1 = new Student("user1", "pass1");
 		student2 = new Student("user2", "pass2");

@@ -1,4 +1,6 @@
-package dp.server.processing;
+package dp.common.communication;
+
+import java.io.Serializable;
 
 /**
  * 
@@ -6,7 +8,7 @@ package dp.server.processing;
  * @author David Sene && Pierre Rainero
  *
  */
-public enum State {
+public enum State implements Serializable{
 	IDEA_STATE,
 	PROJECT_STATE;
 }

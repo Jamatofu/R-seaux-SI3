@@ -1,4 +1,4 @@
-package dp.server.exception;
+package dp.common.exception;
 
 /**
  * 
